@@ -3,16 +3,26 @@
 <html>
 <head>
   <meta charset="utf-8">
-  <title>微信JS-SDK Demo</title>
+  <title>微信H5吹气测试</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=0">
-  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" type="text/css" href="http://203.195.235.76/jssdk/css/style.css" media="all">
+  <style>
+  </style>
 </head>
 <body ontouchstart="">
 <div class="wxapi_container">
 
     <div class="lbox_close wxapi_form">
+      <h3 >吹气测试</h3>
+      <span class="desc">开始吹气</span>
+      <button class="btn btn_primary" id="startBreah">按下按钮开启吹气检测</button>
+      <span class="desc">吹气效果</span>
+      <p class="ibreathvalue"></p>
+      <span class="desc">目前状态</span>
+      <p class="ibreathstatus"></p>
 
-      <h3 id="menu-voice">音频接口</h3>
+
+<!--       <h3 id="menu-voice">音频接口</h3>
       <span class="desc">开始录音接口</span>
       <button class="btn btn_primary" id="startRecord">startRecord</button>
       <span class="desc">停止录音接口</span>
@@ -30,67 +40,281 @@
 
       <h3 id="menu-smart">智能接口</h3>
       <span class="desc">识别音频并返回识别结果接口</span>
-      <button class="btn btn_primary" id="translateVoice">translateVoice</button>
+      <button class="btn btn_primary" id="translateVoice">translateVoice</button> -->
 
     </div>
   </div>
 </body>
+<script src="http://code.jquery.com/jquery-2.1.3.min.js"></script>
 <script src="http://res.wx.qq.com/open/js/jweixin-1.0.0.js"></script>
-<script>
+
+
+  <script>
+    /*
+     * 注意：
+     * 1. 所有的JS接口只能在公众号绑定的域名下调用，公众号开发者需要先登录微信公众平台进入“公众号设置”的“功能设置”里填写“JS接口安全域名”。
+     * 2. 如果发现在 Android 不能分享自定义内容，请到官网下载最新的包覆盖安装，Android 自定义分享接口需升级至 6.0.2.58 版本及以上。
+     * 3. 常见问题及完整 JS-SDK 文档地址：http://mp.weixin.qq.com/wiki/7/aaa137b55fb2e0456bf8dd9148dd613f.html
+     *
+     * 开发中遇到问题详见文档“附录5-常见错误及解决办法”解决，如仍未能解决可通过以下渠道反馈：
+     * 邮箱地址：weixin-open@qq.com
+     * 邮件主题：【微信JS-SDK反馈】具体问题
+     * 邮件内容说明：用简明的语言描述问题所在，并交代清楚遇到该问题的场景，可附上截屏图片，微信团队会尽快处理你的反馈。
+     */
+    wx.config({
+        debug: false,
+        appId: 'wx3dddc85118607981',
+        timestamp: 1414587457,
+        nonceStr: 'Wm3WZYTPz0wzccnW',
+        signature: '7c0e2dd0ece2f8f13d29b47be9b68de8057dc7df',
+        jsApiList: [
+          'checkJsApi',
+          'onMenuShareTimeline',
+          'onMenuShareAppMessage',
+          'onMenuShareQQ',
+          'onMenuShareWeibo',
+          'hideMenuItems',
+          'showMenuItems',
+          'hideAllNonBaseMenuItem',
+          'showAllNonBaseMenuItem',
+          'translateVoice',
+          'startRecord',
+          'stopRecord',
+          'onRecordEnd',
+          'playVoice',
+          'pauseVoice',
+          'stopVoice',
+          'uploadVoice',
+          'downloadVoice',
+          'chooseImage',
+          'previewImage',
+          'uploadImage',
+          'downloadImage',
+          'getNetworkType',
+          'openLocation',
+          'getLocation',
+          'hideOptionMenu',
+          'showOptionMenu',
+          'closeWindow',
+          'scanQRCode',
+          'chooseWXPay',
+          'openProductSpecificView',
+          'addCard',
+          'chooseCard',
+          'openCard'
+        ]
+    });
+  </script>
+  <script type="text/javascript">
+
   /*
    * 注意：
    * 1. 所有的JS接口只能在公众号绑定的域名下调用，公众号开发者需要先登录微信公众平台进入“公众号设置”的“功能设置”里填写“JS接口安全域名”。
    * 2. 如果发现在 Android 不能分享自定义内容，请到官网下载最新的包覆盖安装，Android 自定义分享接口需升级至 6.0.2.58 版本及以上。
-   * 3. 常见问题及完整 JS-SDK 文档地址：http://mp.weixin.qq.com/wiki/7/aaa137b55fb2e0456bf8dd9148dd613f.html
+   * 3. 完整 JS-SDK 文档地址：http://mp.weixin.qq.com/wiki/7/aaa137b55fb2e0456bf8dd9148dd613f.html
    *
-   * 开发中遇到问题详见文档“附录5-常见错误及解决办法”解决，如仍未能解决可通过以下渠道反馈：
+   * 如有问题请通过以下渠道反馈：
    * 邮箱地址：weixin-open@qq.com
    * 邮件主题：【微信JS-SDK反馈】具体问题
    * 邮件内容说明：用简明的语言描述问题所在，并交代清楚遇到该问题的场景，可附上截屏图片，微信团队会尽快处理你的反馈。
    */
-  wx.config({
-      debug: false,
-      appId: 'wxf8b4f85f3a794e77',
-      timestamp: 1430205205,
-      nonceStr: 'bf5FKKxAXAAAWusi',
-      signature: 'f5430c9c423744437bd0590939148ba5e88c784b',
-      jsApiList: [
-        'checkJsApi',
-        'onMenuShareTimeline',
-        'onMenuShareAppMessage',
-        'onMenuShareQQ',
-        'onMenuShareWeibo',
-        'hideMenuItems',
-        'showMenuItems',
-        'hideAllNonBaseMenuItem',
-        'showAllNonBaseMenuItem',
-        'translateVoice',
-        'startRecord',
-        'stopRecord',
-        'onRecordEnd',
-        'playVoice',
-        'pauseVoice',
-        'stopVoice',
-        'uploadVoice',
-        'downloadVoice',
-        'chooseImage',
-        'previewImage',
-        'uploadImage',
-        'downloadImage',
-        'getNetworkType',
-        'openLocation',
-        'getLocation',
-        'hideOptionMenu',
-        'showOptionMenu',
-        'closeWindow',
-        'scanQRCode',
-        'chooseWXPay',
-        'openProductSpecificView',
-        'addCard',
-        'chooseCard',
-        'openCard'
-      ]
+
+
+
+
+  wx.ready(function () {
+
+
+
+
+    // 3 智能接口
+    var voice = {
+      localId: '',
+      serverId: ''
+    };
+    // 3.1 识别音频并返回识别结果
+
+    document.querySelector('#translateVoice').onclick = function () {
+      if (voice.localId == '') {
+        alert('请先使用 startRecord 接口录制一段声音');
+        return;
+      }
+      wx.translateVoice({
+        localId: voice.localId,
+        complete: function (res) {
+          if (res.hasOwnProperty('translateResult')) {
+            alert('识别结果：' + res.translateResult);
+          } else {
+            alert('无法识别');
+          }
+        }
+      });
+    };
+
+    // 4 音频接口
+    // 4.2 开始录音
+    document.querySelector('#startRecord').onclick = function () {
+      // alert('startRecord!');
+      wx.startRecord({
+        cancel: function () {
+          alert('用户拒绝授权录音');
+        }
+      });
+    };
+
+    // 4.3 停止录音
+    document.querySelector('#stopRecord').onclick = function () {
+      wx.stopRecord({
+        success: function (res) {
+          voice.localId = res.localId;
+        },
+        fail: function (res) {
+          alert(JSON.stringify(res));
+        }
+      });
+    };
+
+    // 4.4 监听录音自动停止
+    wx.onVoiceRecordEnd({
+      complete: function (res) {
+        voice.localId = res.localId;
+        alert('录音时间已超过一分钟');
+      }
+    });
+
+    // 4.5 播放音频
+    document.querySelector('#playVoice').onclick = function () {
+      if (voice.localId == '') {
+        alert('请先使用 startRecord 接口录制一段声音');
+        return;
+      }
+      wx.playVoice({
+        localId: voice.localId
+      });
+    };
+
+    // 4.6 暂停播放音频
+    document.querySelector('#pauseVoice').onclick = function () {
+      wx.pauseVoice({
+        localId: voice.localId
+      });
+    };
+
+    // 4.7 停止播放音频
+    document.querySelector('#stopVoice').onclick = function () {
+      wx.stopVoice({
+        localId: voice.localId
+      });
+    };
+
+    // 4.8 监听录音播放停止
+    wx.onVoicePlayEnd({
+      complete: function (res) {
+        alert('录音（' + res.localId + '）播放结束');
+      }
+    });
+
+    // 4.8 上传语音
+    document.querySelector('#uploadVoice').onclick = function () {
+      if (voice.localId == '') {
+        alert('请先使用 startRecord 接口录制一段声音');
+        return;
+      }
+      wx.uploadVoice({
+        localId: voice.localId,
+        success: function (res) {
+          alert('上传语音成功，serverId 为' + res.serverId);
+          voice.serverId = res.serverId;
+        }
+      });
+    };
+
+    // 4.9 下载语音
+    document.querySelector('#downloadVoice').onclick = function () {
+      if (voice.serverId == '') {
+        alert('请先使用 uploadVoice 上传声音');
+        return;
+      }
+      wx.downloadVoice({
+        serverId: voice.serverId,
+        success: function (res) {
+          alert('下载语音成功，localId 为' + res.localId);
+          voice.localId = res.localId;
+        }
+      });
+    };
+
+
+    var shareData = {
+      title: '微信JS-SDK Demo',
+      desc: '微信JS-SDK,帮助第三方为用户提供更优质的移动web服务',
+      link: 'http://demo.open.weixin.qq.com/jssdk/',
+      imgUrl: 'http://mmbiz.qpic.cn/mmbiz/icTdbqWNOwNRt8Qia4lv7k3M9J1SKqKCImxJCt7j9rHYicKDI45jRPBxdzdyREWnk0ia0N5TMnMfth7SdxtzMvVgXg/0'
+    };
+    wx.onMenuShareAppMessage(shareData);
+    wx.onMenuShareTimeline(shareData);
   });
-</script>
-<script src="js/demo.js"> </script>
+
+  wx.error(function (res) {
+    alert(res.errMsg);
+  });
+    // ibreath
+    $(document).ready(function(){
+      var voice = {
+        localId: '',
+        serverId: ''
+      };
+      console.log('jquery');
+      $('.ibreathstatus').html("空闲");
+      $('#startBreah').click(function() {
+        //定时录音
+        $('.ibreathstatus').html("启动录音");
+        wx.startRecord({
+          cancel: function () {
+            alert('用户拒绝授权录音');
+            $('.ibreathstatus').html("用户拒绝录音");
+          }
+        });
+        //定时停止并上传语音识别
+        setTimeout(function () {
+          wx.stopRecord({
+            success: function (res) {
+              voice.localId = res.localId;
+            },
+            fail: function (res) {
+              $('.ibreathstatus').html(JSON.stringify(res));
+            }
+          });
+          $('.ibreathstatus').html("voice.localId:" +voice.localId);
+          // $('.ibreathstatus').html("录音暂停");
+          if (voice.localId == '') {
+            $('.ibreathstatus').html('请先使用 startRecord 接口录制一段声音');
+            return;
+          }
+          $('.ibreathstatus').html("录音上传");
+          wx.translateVoice({
+            localId: voice.localId,
+            isShowProgressTips: 0,
+            complete: function (res) {
+              if (res.hasOwnProperty('translateResult')) {
+                $('.ibreathstatus').html('识别结果：' + res.translateResult);
+                $('.ibreathvalue').html(res.translateResult);
+              } else {
+                $('.ibreathstatus').html('无法识别');
+                $('.ibreathvalue').html("");
+              }
+            }
+          });
+
+        }, 4000);
+        //语音识别的结果进行判断
+        //如果是不能识别，就不加
+        //如果是能识别，就加
+
+
+      });
+
+    });
+
+  </script>
 </html>
