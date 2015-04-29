@@ -15,13 +15,19 @@
 
     <div class="lbox_close wxapi_form">
       <h3 >吹气测试</h3>
-      <span class="desc">开始吹气</span>
-      <button class="btn btn_primary" id="startBreah">按下按钮开启吹气检测</button>
-      <span class="desc">吹气效果</span>
-      <p class="ibreathvalue"></p>
-      <span class="desc">目前状态</span>
-      <p class="ibreathstatus"></p>
+      <div class="openbox">
+        <span class="desc">先来打开微信录音开关</span>
+        <button class="btn btn_primary" id="startWrok">打开</button>
+      </div>
+      <div class="breathbox" style="display:none">
+        <span class="desc">开始吹气</span>
+        <button class="btn btn_primary" id="startBreah">按下按钮开启吹气检测</button>
+        <span class="desc">吹气效果</span>
+        <p class="ibreathvalue"></p>
+      </div>
 
+        <span class="desc">目前状态</span>
+        <p class="ibreathstatus"></p>
 
 <!--       <h3 id="menu-voice">音频接口</h3>
       <span class="desc">开始录音接口</span>
@@ -68,7 +74,7 @@
 appId: 'wx3dddc85118607981',
 timestamp: 1414587457,
 nonceStr: 'Wm3WZYTPz0wzccnW',
-signature: 'b2f86510ae7fa28a8f0292d2864d9c0048351f08',
+signature: 'e6f4f1e2eb2d44498f00cde07dd0f3d9900b649e',
         jsApiList: [
           'checkJsApi',
           'onMenuShareTimeline',
@@ -339,17 +345,43 @@ signature: 'b2f86510ae7fa28a8f0292d2864d9c0048351f08',
         var d = dom.Deferred
         d.loop(20, function(i){
           dom.Deferred(function(){
-              myRecord();
-          }).wait(1000).then(function(){
               myStopRecord();
+          }).wait(10).then(function(){
+              myRecord();
           }).wait(10).fire()
-            return d.wait(1000)
+            return d.wait(1500)
         });
-        d.loop(39, function(i){
+        d.loop(40, function(i){
             myCheckVoice();
             log(voice.localId + "," + i);
-            return d.wait(500)
+            return d.wait(800)
         });
+      });
+      $('#startWrok').click(function() {
+        dom.Deferred(function(){
+
+            wx.startRecord({
+              cancel: function () {
+                alert('用户拒绝授权录音');
+                $('.ibreathstatus').html("用户拒绝录音");
+              }
+            });
+
+          }).wait(500).then(function(){
+
+            wx.stopRecord({
+              success: function (res) {
+                $('.openbox').hide();
+                $('.breathbox').show();
+              },
+              fail: function (res) {
+                $('.ibreathstatus').html(JSON.stringify(res));
+              }
+            });
+
+          }).wait(10).fire()
+
+
       });
 
       // $('#startBreah').click(function() {
