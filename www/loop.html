@@ -1,0 +1,42 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>loop测试</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=0">
+  <link rel="stylesheet" type="text/css" href="http://203.195.235.76/jssdk/css/style.css" media="all">
+    <script src="http://files.cnblogs.com/rubylouvre/dom_Deferred.js">
+    </script>
+
+</head>
+
+<body>
+    <button class="btn btn_primary" id="stopRecord">start</button>
+</body>
+<script>
+    var log = function(a) {
+        var div = document.createElement("div");
+        div.innerHTML = a;
+        document.body.appendChild(div);
+    }
+    document.querySelector('#stopRecord').onclick = function () {
+        var d = dom.Deferred
+        d.loop(10, function(i){
+              dom.Deferred(function(){
+                  log('myRecord()' + i);
+              }).wait(1000).then(function(){
+                  log('myStopRecord()' + i);
+              }).wait(10).fire();
+            log('队列1:' + i);
+            return d.wait(1000)
+        });
+        d.loop(20, function(i){
+            log('队列2:' + i);
+            return d.wait(500)
+        });
+    };
+
+
+</script>
+</html>
